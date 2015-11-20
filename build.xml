@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<project name="PHING-Tests" basedir="." default="unittest">
+  <target name ="defaults">
+    <property name="composer.pharpath">.\composer.phar</property>
+    <includepath classpath="./vendor/bin" />
+  </target>
+  <target name ="composer" depends="defaults">
+    <delete file="./composer.lock" />
+    <composer composer="${composer.pharpath}" command="install"/>
+  </target>
+  <target name="unittest" depends="composer, defaults">
+    <available file="./phpunit.phar" type="file" property="phpunitphar.exists" />
+    <if>
+      <not><isset property="phpunitphar.exists" /></not>
+      <then>
+        <httpget url="https://phar.phpunit.de/phpunit.phar" dir="." />
+      </then>
+    </if>
+    <phpunit bootstrap="vendor/autoload.php" pharlocation="./phpunit.phar">
+      <formatter type="summary" usefile="false" />
+      <batchtest>
+        <fileset dir="tests">
+          <include name="**/*.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
+</project>
