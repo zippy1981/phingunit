@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="PHING-Tests" basedir="." default="unittest">
   <target name ="defaults">
-    <property name="composer.pharpath">.\composer.phar</property>
+    <property name="composer.pharpath">./composer.phar</property>
     <includepath classpath="./vendor/bin" />
   </target>
   <target name ="composer" depends="defaults">
